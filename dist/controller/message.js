@@ -16,24 +16,49 @@ function formatDate(date) {
     return dd + '.' + mm + '.' + yy;
   }
 
+function checkTextLength(text) {
+    let regExpText = /^.{100,}/;
+    if(regExpText.test(text) != false) {
+        return true;
+    }
+} 
+
+function checkVerifyEmail(email) {
+    let regExpEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
+    if(regExpEmail.test(email) != false) {
+        return true;
+    }
+}
+
 module.exports = ({config, db}) => {
     let api = Router();
 
     api.post('/add', (req, res) => {
-        let newDate = formatDate(new Date());
-        let newMess = new Message();
-        newMess.name = req.body.name;
-        newMess.email = req.body.email;
-        newMess.text = req.body.text;
-        newMess.createDate = newDate;
-        newMess.updateDate = newDate;
+       
+        if (checkTextLength(req.body.text) == true)
+        {
+            if (checkVerifyEmail(req.body.email) == true)
+            {
+                let newDate = formatDate(new Date());
+                let newMess = new Message();
+                newMess.name = req.body.name;
+                newMess.email = req.body.email;
+                newMess.text = req.body.text;
+                newMess.createDate = newDate;
+                newMess.updateDate = newDate;
 
-        newMess.save(err => {
-            if(err) {
-                res.setEncoding(err);
+                newMess.save(err => {
+                    if(err) {
+                        res.setEncoding(err);
+                    }
+                    res.json({ message: 'Message saved successfully'});
+                });
+            } else {
+                res.json({ message: 'Enter a valid email address.' });
             }
-            res.json({ message: 'Message saved successfuly'});
-        });
+        } else {
+            res.json({ message: 'Message empty or length < 100.' });
+        }
     });
 
 
