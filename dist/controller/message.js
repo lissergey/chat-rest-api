@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Router } = require('express');
 const Message = require('../model/message');
+const paginate = require('express-paginate');
 
 function formatDate(date) {
 
@@ -17,7 +18,7 @@ function formatDate(date) {
   }
 
 function checkTextLength(text) {
-    let regExpText = /^.{100,}/;
+    let regExpText = /^.{1,100}/;
     if(regExpText.test(text) != false) {
         return true;
     }
@@ -57,17 +58,29 @@ module.exports = ({config, db}) => {
                 res.status(400).send('Enter a valid email address.');
             }
         } else {
-            res.status(400).send('Message empty or length < 100.');
+            res.status(400).send('Message empty or length > 100.');
         }
     });
 
 
     api.get('/', (req, res) => {
+
         Message.find({}, (err, messages) => {
+            const pageCount = Math.ceil(messages.length / 10);
+            let page = parseInt(req.query.p);
+    
+            if (!page) { page = 1; }
+            if (page > pageCount) {
+                page = pageCount;
+            }
             if(err) {
                 res.send(err);
             }
-            res.json(messages);
+            res.json({
+                "page": page,
+                "pageCount": pageCount,
+                "messages": messages.slice(page * 10 - 10, page * 10)
+            });
         });
     });
 
