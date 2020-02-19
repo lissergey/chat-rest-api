@@ -54,10 +54,10 @@ module.exports = ({config, db}) => {
                     res.json({ message: 'Message saved successfully'});
                 });
             } else {
-                res.json({ message: 'Enter a valid email address.' });
+                res.status(400).send('Enter a valid email address.');
             }
         } else {
-            res.json({ message: 'Message empty or length < 100.' });
+            res.status(400).send('Message empty or length < 100.');
         }
     });
 
