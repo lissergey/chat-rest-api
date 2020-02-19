@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const { Router } = require('express');
 const Message = require('../model/message');
 
-const { authenticate } = require('../middleware/authmiddleware');
-
 function formatDate(date) {
 
     var dd = date.getDate();
@@ -21,7 +19,7 @@ function formatDate(date) {
 module.exports = ({config, db}) => {
     let api = Router();
 
-    api.post('/add', authenticate, (req, res) => {
+    api.post('/add', (req, res) => {
         let newDate = formatDate(new Date());
         let newMess = new Message();
         newMess.name = req.body.name;
@@ -57,7 +55,7 @@ module.exports = ({config, db}) => {
         });
     });
 
-    api.put('/:id', authenticate, (req, res) => {
+    api.put('/:id', (req, res) => {
         Message.findById(req.params.id, (err, message) => {
             if (err) {
                 res.send(err);
@@ -72,7 +70,7 @@ module.exports = ({config, db}) => {
         });
     });
 
-    api.delete('/:id', authenticate, (req, res) => {
+    api.delete('/:id', (req, res) => {
         Message.remove({
             _id: req.params.id 
         }, (err, message) => {
