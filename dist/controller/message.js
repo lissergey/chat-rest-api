@@ -46,7 +46,7 @@ module.exports = ({config, db}) => {
         });
     });
 
-    api.get('/:id', (req, res) => {
+    api.get('/single/:id', (req, res) => {
         Message.findById(req.params.id, (err, message) => {
             if (err) {
                 res.send(err);
