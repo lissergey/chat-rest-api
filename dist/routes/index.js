@@ -10,7 +10,7 @@ let router = express();
 initializeDb(db => {
     router.use(middleware({config, db}));
 
-    router.use('/message', message ({config, db}));
+    router.use('/messages', message ({config, db}));
     router.use('/account', account ({config, db}));
 });
 

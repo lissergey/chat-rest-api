@@ -26,7 +26,7 @@ passport.use(new LocalStrategy({
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-app.use('/v1', routes);
+app.use('/api', routes);
 
 app.server.listen(config.port);
 console.log(`Started on port ${app.server.address().port}`);
