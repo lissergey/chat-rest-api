@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Router } = require('express');
 const Message = require('../model/message');
 
-const { authenticate } = require('../middleware/authMiddleware');
+const { authenticate } = require('../middleware/authmiddleware');
 
 function formatDate(date) {
 
