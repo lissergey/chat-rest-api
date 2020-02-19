@@ -62,7 +62,7 @@ module.exports = ({config, db}) => {
         }
     });
 
-
+////
     api.get('/', (req, res) => {
 
         Message.find({}, (err, messages) => {
