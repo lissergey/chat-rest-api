@@ -84,6 +84,16 @@ module.exports = ({config, db}) => {
         });
     });
 
+    api.get('/all/', (req, res) => {
+
+        Message.find({}, (err, messages) => {
+            if(err) {
+                res.send(err);
+            }
+            res.json(messages);
+        });
+    });
+
     api.get('/single/:id', (req, res) => {
         Message.findById(req.params.id, (err, message) => {
             if (err) {
